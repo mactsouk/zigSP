@@ -1,0 +1,8 @@
+let x = 10;
+let y = 20;
+if (x < y) {
+  x = x * 2;
+} else {
+  x = 0;
+}
+return x;

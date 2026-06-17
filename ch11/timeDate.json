@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "event": "login",
+    "timestamp": "2025-07-31T08:15:00Z"
+  },
+  {
+    "id": 2,
+    "event": "logout",
+    "timestamp": "invalid-date"
+  },
+  {
+    "id": 3,
+    "event": "upload",
+    "timestamp": "2025-07-31T09:45:12Z"
+  }
+]
+

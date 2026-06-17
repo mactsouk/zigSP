@@ -1,0 +1,14 @@
+.{
+    .name = .my_project,
+    .version = "0.1.0",
+    .fingerprint = 0xa54a7cc201649d8a, // suggested by the compiler
+
+    .dependencies = .{
+        .tsdist = .{
+            .url = "git+https://github.com/mactsouk/tsdist-zig?ref=main#467e99ba95d29657de06920f38b419dabccad7a9",
+            .hash = "zig_distances-0.1.0-EOpI-h4jAAAI7mMBGf4gMtGVm0GN47oLfcNDcMfzKTOj",
+            .branch = "main", // or .tag = "vX.Y.Z"
+        },
+    },
+    .paths = .{"."},
+}

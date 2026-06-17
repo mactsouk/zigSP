@@ -1,0 +1,30 @@
+digraph ZEMP_Parser_State_Machine {
+    graph [ dpi = 300 ];
+    rankdir=LR;
+    node [shape = circle, fontname="Helvetica"];
+
+    START  [shape = point];
+    CLOSED [shape = doublecircle, color = red];
+    READING_PREFIX  [label = "Reading Prefix\n(8 bytes)",  color = blue];
+    READING_PAYLOAD [label = "Reading Payload\n(N bytes)", color = green];
+
+    START -> READING_PREFIX;
+
+    // Normal flow — readSliceAll() blocks until the buffer is exactly full.
+    // There are no partial-read self-loops; the blocking call handles that
+    // internally and returns only on success or error.
+    READING_PREFIX  -> READING_PAYLOAD [label = "readSliceAll ok\n(Parse Header)"];
+    READING_PAYLOAD -> READING_PREFIX  [label = "Dispatch ok\n(Send response, loop)"];
+
+    // parseRequest failure: send error response but keep connection alive.
+    READING_PAYLOAD -> READING_PREFIX  [label = "parseRequest error\n(Send error, continue)", color = orange, fontcolor = orange];
+
+    // Terminal transitions — connection is closed.
+    // parsePrefix errors (bad magic, bad version, payload too large):
+    // send error response then return.
+    READING_PREFIX  -> CLOSED [label = "Bad Magic / Version\nor Too Large\n(Send error, close)", color = red, fontcolor = red];
+
+    // EndOfStream on either read: clean disconnect or mid-frame drop.
+    READING_PREFIX  -> CLOSED [label = "EndOfStream", color = red, fontcolor = red];
+    READING_PAYLOAD -> CLOSED [label = "EndOfStream", color = red, fontcolor = red];
+}

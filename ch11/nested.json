@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "address": {
+      "street": "123 Main St",
+      "city": "Zigville",
+      "postal": "12345"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "address": {
+      "street": "456 Side Rd",
+      "city": "Compiletown",
+      "postal": "67890"
+    }
+  }
+]
+

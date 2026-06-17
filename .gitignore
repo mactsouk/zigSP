@@ -1,0 +1,10 @@
+.zig-cache/
+zig-out/
+zig-pkg/
+*.o
+
+ch02/zwhich.docs/
+.claude/
+mise.toml
+CLAUDE.md
+

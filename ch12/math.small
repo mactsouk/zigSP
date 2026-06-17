@@ -1,0 +1,4 @@
+let a = 10;
+let b = 5;
+let c = a * 2 + b * 4; 
+return c;
