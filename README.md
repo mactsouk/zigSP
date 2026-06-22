@@ -1,6 +1,6 @@
 # Systems Programming with Zig
 
-<img src="./cover.png" width="460">
+<img src="./cover.jpg" width="460">
 
 ## Table of Contents
 
