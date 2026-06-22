@@ -1,5 +1,7 @@
 # Systems Programming with Zig
 
+<img src="./cover.png" width="460">
+
 ## Table of Contents
 
 1. [Building Essential UNIX Tools](#chapter-1--building-essential-unix-tools)
