@@ -1,6 +1,6 @@
 # Systems Programming with Zig
 
-<img src="./cover.jpg" width="460">
+[<img src="./cover.jpg" width="460">](https://www.packtpub.com/en-us/product/systems-programming-with-zig-9781807426422)
 
 ## Table of Contents
 
