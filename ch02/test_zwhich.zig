@@ -112,13 +112,21 @@ test "filesystem helpers" {
     try testing.expect(!isFile(io, abs_dir_path));
 
     // --- TEST: isExecutable ---
-    if (@import("builtin").os.tag != .windows) {
+    if (std.Io.File.Permissions.has_executable_bit) {
         // Case A: Make it executable (755)
-        _ = std.c.fchmod(file.handle, 0o755);
+        try file.setPermissions(io, .fromMode(0o755));
         try testing.expect(isExecutable(io, abs_file_path));
 
         // Case B: Make it non-executable (644)
-        _ = std.c.fchmod(file.handle, 0o644);
+        try file.setPermissions(io, .fromMode(0o644));
+
+        // Some environments (e.g. a file system mounted with restricted
+        // permission bits) silently ignore the permission change. Skip
+        // instead of reporting a failure that says nothing about the code
+        // under test.
+        const stat = try std.Io.Dir.cwd().statFile(io, abs_file_path, .{});
+        if (stat.permissions.toMode() & 0o111 != 0) return error.SkipZigTest;
+
         try testing.expect(!isExecutable(io, abs_file_path));
     }
 }
