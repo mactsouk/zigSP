@@ -1,10 +1,13 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("netdb.h");
-    @cInclude("sys/socket.h");
-    @cInclude("arpa/inet.h");
-    @cInclude("netinet/in.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("netdb.h");
+//     @cInclude("sys/socket.h");
+//     @cInclude("arpa/inet.h");
+//     @cInclude("netinet/in.h");
+// });
+// Zig 0.17: zig translate-c -lc resolveHostname_c.h > resolveHostname_c.zig
+const c = @import("resolveHostname_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     var iter = init.minimal.args.iterate();

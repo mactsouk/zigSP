@@ -19,14 +19,17 @@
 
 const std = @import("std");
 const builtin = @import("builtin");
-const c = @cImport({
-    @cInclude("sys/event.h");
-    @cInclude("sys/socket.h");
-    @cInclude("netinet/in.h");
-    @cInclude("arpa/inet.h");
-    @cInclude("unistd.h");
-    @cInclude("fcntl.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/event.h");
+//     @cInclude("sys/socket.h");
+//     @cInclude("netinet/in.h");
+//     @cInclude("arpa/inet.h");
+//     @cInclude("unistd.h");
+//     @cInclude("fcntl.h");
+// });
+// Zig 0.17: zig translate-c -lc kqueue_c.h > kqueue_c.zig
+const c = @import("kqueue_c.zig");
 
 comptime {
     if (builtin.os.tag != .macos and !builtin.os.tag.isBSD())

@@ -6,8 +6,11 @@ RUN apk add --no-cache zig build-base
 WORKDIR /app
 COPY tcp.zig .
 COPY udp.zig .
+COPY udp_c.h .
 
 RUN zig build-exe tcp.zig -O ReleaseSafe -target native-native-musl -static -lc
+# Zig 0.17: udp.zig imports udp_c.zig, which is generated from udp_c.h
+RUN zig translate-c -lc -target native-native-musl udp_c.h > udp_c.zig
 RUN zig build-exe udp.zig -O ReleaseSafe -target native-native-musl -static -lc
 
 # Final image

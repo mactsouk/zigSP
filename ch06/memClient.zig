@@ -1,10 +1,13 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("sys/types.h");
-    @cInclude("sys/socket.h");
-    @cInclude("netdb.h");
-    @cInclude("arpa/inet.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/types.h");
+//     @cInclude("sys/socket.h");
+//     @cInclude("netdb.h");
+//     @cInclude("arpa/inet.h");
+// });
+// Zig 0.17: zig translate-c -lc memClient_c.h > memClient_c.zig
+const c = @import("memClient_c.zig");
 
 /// Resolve a hostname or IP literal to an IPv4 address string.
 /// Caller must free the returned slice.
@@ -15,7 +18,8 @@ fn resolveHostname(allocator: std.mem.Allocator, host: []const u8) ![]const u8 {
     } else |_| {}
 
     // Use getaddrinfo to resolve the hostname.
-    const host_z = try allocator.dupeZ(u8, host);
+    // Zig 0.16: allocator.dupeZ(u8, host)
+    const host_z = try allocator.dupeSentinel(u8, host, 0);
     defer allocator.free(host_z);
 
     var hints = std.mem.zeroes(c.struct_addrinfo);

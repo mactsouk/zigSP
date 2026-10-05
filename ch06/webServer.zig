@@ -1,8 +1,11 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("signal.h");
-    @cInclude("unistd.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("signal.h");
+//     @cInclude("unistd.h");
+// });
+// Zig 0.17: zig translate-c -lc webServer_c.h > webServer_c.zig
+const c = @import("webServer_c.zig");
 
 export fn handle_sigint(sig: c_int) callconv(.c) void {
     _ = sig;

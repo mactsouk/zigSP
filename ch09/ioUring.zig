@@ -32,13 +32,16 @@ const posix = std.posix;
 
 // Socket setup functions that posix.socket() used to cover; they were
 // removed in Zig 0.16.  We call the C library directly instead.
-const c = @cImport({
-    @cInclude("sys/socket.h");
-    @cInclude("netinet/in.h");
-    @cInclude("arpa/inet.h");
-    @cInclude("unistd.h");
-    @cInclude("fcntl.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/socket.h");
+//     @cInclude("netinet/in.h");
+//     @cInclude("arpa/inet.h");
+//     @cInclude("unistd.h");
+//     @cInclude("fcntl.h");
+// });
+// Zig 0.17: zig translate-c -lc ioUring_c.h > ioUring_c.zig
+const c = @import("ioUring_c.zig");
 
 comptime {
     if (builtin.os.tag != .linux)

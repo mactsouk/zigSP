@@ -1,9 +1,12 @@
 const std = @import("std");
 
-const c = @cImport({
-    @cInclude("signal.h");
-    @cInclude("unistd.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("signal.h");
+//     @cInclude("unistd.h");
+// });
+// Zig 0.17: zig translate-c -lc sigInt_c.h > sigInt_c.zig
+const c = @import("sigInt_c.zig");
 
 var running: std.atomic.Value(bool) = std.atomic.Value(bool).init(true);
 

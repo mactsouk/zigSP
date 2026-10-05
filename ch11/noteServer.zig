@@ -1,10 +1,16 @@
 const std = @import("std");
-const sqlite3 = @cImport({
-    @cInclude("sqlite3.h");
-});
-const c = @cImport({
-    @cInclude("signal.h");
-});
+// Zig 0.16:
+// const sqlite3 = @cImport({
+//     @cInclude("sqlite3.h");
+// });
+// Zig 0.17: zig translate-c -lc noteServer_c.h > noteServer_c.zig
+const sqlite3 = @import("noteServer_c.zig");
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("signal.h");
+// });
+// Zig 0.17: signal.h is also listed in noteServer_c.h
+const c = @import("noteServer_c.zig");
 
 // Only async-signal-safe operations are permitted inside a signal handler.
 // std.process.exit and std.debug.print are both unsafe (they acquire locks

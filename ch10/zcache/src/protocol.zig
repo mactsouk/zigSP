@@ -285,7 +285,8 @@ test "parsePrefix: valid header" {
 }
 
 test "parsePrefix: bad magic byte returns error" {
-    var buf: [FRAME_PREFIX_LEN]u8 = [_]u8{0} ** FRAME_PREFIX_LEN;
+    // Zig 0.16: [_]u8{0} ** FRAME_PREFIX_LEN
+    var buf: [FRAME_PREFIX_LEN]u8 = @splat(0);
     buf[0] = 0xFF; // wrong magic
     try std.testing.expectError(error.BadMagic, parsePrefix(&buf));
 }

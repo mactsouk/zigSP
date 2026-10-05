@@ -219,7 +219,8 @@ fn fmtRelTime(now: i64, ts: i64, is_future: bool) SmallBuf {
 }
 
 fn fmtInterval(secs: u64) [8]u8 {
-    var buf = [_]u8{' '} ** 8;
+    // Zig 0.16: var buf = [_]u8{' '} ** 8;
+    var buf: [8]u8 = @splat(' ');
     if (secs < 60) {
         _ = std.fmt.bufPrint(&buf, "{d}s", .{secs}) catch {};
     } else if (secs < 3600) {

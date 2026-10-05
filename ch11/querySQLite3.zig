@@ -1,7 +1,10 @@
 const std = @import("std");
-const sqlite3 = @cImport({
-    @cInclude("sqlite3.h");
-});
+// Zig 0.16:
+// const sqlite3 = @cImport({
+//     @cInclude("sqlite3.h");
+// });
+// Zig 0.17: zig translate-c -lc querySQLite3_c.h > querySQLite3_c.zig
+const sqlite3 = @import("querySQLite3_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     const args = try init.minimal.args.toSlice(init.arena.allocator());

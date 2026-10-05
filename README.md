@@ -2,6 +2,11 @@
 
 [<img src="./cover.jpg" width="460">](https://www.packtpub.com/en-us/product/systems-programming-with-zig-9781807426422)
 
+## Zig Versions
+
+- The `main` branch contains the code for **Zig 0.17**.
+- The [`0.16`](../../tree/0.16) branch contains the code for **Zig 0.16**.
+
 ## Table of Contents
 
 1. [Building Essential UNIX Tools](#chapter-1--building-essential-unix-tools)

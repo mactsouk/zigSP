@@ -1,8 +1,11 @@
 const std = @import("std");
 
-const c = @cImport({
-    @cInclude("stdlib.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("stdlib.h");
+// });
+// Zig 0.17: zig translate-c -lc rel2abs_c.h > rel2abs_c.zig
+const c = @import("rel2abs_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;

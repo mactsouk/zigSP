@@ -1,8 +1,11 @@
 const std = @import("std");
 
-const c = @cImport({
-    @cInclude("stdio.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("stdio.h");
+// });
+// Zig 0.17: zig translate-c -lc convertPtr_c.h > convertPtr_c.zig
+const c = @import("convertPtr_c.zig");
 
 pub fn printC(s: [*:0]const u8) c_int {
     return c.printf("%s\n", s);

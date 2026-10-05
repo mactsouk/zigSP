@@ -5,7 +5,8 @@ const BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
 // Generate a reverse lookup table at compile-time (O(1) lookup)
 // 0xFF represents an invalid character (like \n or space)
 const DECODE_TABLE = blk: {
-    var table: [256]u8 = [_]u8{0xFF} ** 256;
+    // Zig 0.16: var table: [256]u8 = [_]u8{0xFF} ** 256;
+    var table: [256]u8 = @splat(0xFF);
     for (BASE64_ALPHABET, 0..) |char, i| {
         table[char] = @as(u8, @intCast(i));
     }

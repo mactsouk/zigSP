@@ -18,7 +18,8 @@ const signal_t = blk: {
     const handler_fn_ptr_opt = @FieldType(@FieldType(posix.Sigaction, "handler"), "handler");
     const handler_fn_ptr = @typeInfo(handler_fn_ptr_opt).optional.child;
     const handler_fn = @typeInfo(handler_fn_ptr).pointer.child;
-    break :blk @typeInfo(handler_fn).@"fn".params[0].type.?;
+    // Zig 0.16: @typeInfo(handler_fn).@"fn".params[0].type.?
+    break :blk @typeInfo(handler_fn).@"fn".param_types[0].?;
 };
 
 // ─── Shared flags ─────────────────────────────────────────────────────────────

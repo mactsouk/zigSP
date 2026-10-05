@@ -40,12 +40,14 @@ const CentralDirectoryHeader = struct {
 // Verify at compile time that field sizes sum to the expected wire sizes.
 comptime {
     var eocd_wire: usize = 0;
-    for (std.meta.fields(EOCD)) |f| eocd_wire += @sizeOf(f.type);
+    // Zig 0.16: for (std.meta.fields(EOCD)) |f| eocd_wire += @sizeOf(f.type);
+    for (@typeInfo(EOCD).@"struct".field_types) |FT| eocd_wire += @sizeOf(FT);
     if (eocd_wire != EOCD_SIZE)
         @compileError("EOCD field sizes do not sum to EOCD_SIZE");
 
     var cd_wire: usize = 0;
-    for (std.meta.fields(CentralDirectoryHeader)) |f| cd_wire += @sizeOf(f.type);
+    // Zig 0.16: for (std.meta.fields(CentralDirectoryHeader)) |f| cd_wire += @sizeOf(f.type);
+    for (@typeInfo(CentralDirectoryHeader).@"struct".field_types) |FT| cd_wire += @sizeOf(FT);
     if (cd_wire != CD_HEADER_SIZE)
         @compileError("CentralDirectoryHeader field sizes do not sum to CD_HEADER_SIZE");
 }

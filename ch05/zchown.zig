@@ -1,10 +1,13 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const c = @cImport({
-    @cInclude("unistd.h");
-    @cInclude("fcntl.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("unistd.h");
+//     @cInclude("fcntl.h");
+// });
+// Zig 0.17: zig translate-c -lc zchown_c.h > zchown_c.zig
+const c = @import("zchown_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
@@ -36,7 +39,8 @@ pub fn main(init: std.process.Init) !void {
 
     // Produce a null-terminated copy; fchownat expects a C string.
     var path_buf: [std.fs.max_path_bytes:0]u8 = undefined;
-    const path_z = std.fmt.bufPrintZ(&path_buf, "{s}", .{path}) catch {
+    // Zig 0.16: std.fmt.bufPrintZ(&path_buf, "{s}", .{path})
+    const path_z = std.fmt.bufPrintSentinel(&path_buf, "{s}", .{path}, 0) catch {
         try stderr.writeStreamingAll(io, "Error: path too long\n");
         return;
     };

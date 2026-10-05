@@ -1,8 +1,11 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("signal.h");
-    @cInclude("unistd.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("signal.h");
+//     @cInclude("unistd.h");
+// });
+// Zig 0.17: zig translate-c -lc getInformation_c.h > getInformation_c.zig
+const c = @import("getInformation_c.zig");
 
 var randomValue = std.atomic.Value(i32).init(0);
 var sRunning = std.atomic.Value(usize).init(0);

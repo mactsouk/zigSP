@@ -1,10 +1,13 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("sys/socket.h");
-    @cInclude("netinet/in.h");
-    @cInclude("arpa/inet.h");
-    @cInclude("unistd.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/socket.h");
+//     @cInclude("netinet/in.h");
+//     @cInclude("arpa/inet.h");
+//     @cInclude("unistd.h");
+// });
+// Zig 0.17: zig translate-c -lc udpServer_c.h > udpServer_c.zig
+const c = @import("udpServer_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     const args = try init.minimal.args.toSlice(init.arena.allocator());

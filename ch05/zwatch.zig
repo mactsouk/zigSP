@@ -1,8 +1,11 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const c = @cImport({
-    @cInclude("sys/event.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/event.h");
+// });
+// Zig 0.17: zig translate-c -lc zwatch_c.h > zwatch_c.zig
+const c = @import("zwatch_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;

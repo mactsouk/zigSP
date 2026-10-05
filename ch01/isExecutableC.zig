@@ -1,6 +1,8 @@
 const std = @import("std");
 
-const c = @cImport(@cInclude("unistd.h"));
+// Zig 0.16: const c = @cImport(@cInclude("unistd.h"));
+// Zig 0.17: zig translate-c -lc isExecutableC_c.h > isExecutableC_c.zig
+const c = @import("isExecutableC_c.zig");
 
 // Import the `access()` function from C
 extern fn access(path: [*:0]const u8, mode: c_int) c_int;

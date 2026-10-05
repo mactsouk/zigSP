@@ -1,7 +1,10 @@
 const std = @import("std");
-const sqlite3 = @cImport({
-    @cInclude("sqlite3.h");
-});
+// Zig 0.16:
+// const sqlite3 = @cImport({
+//     @cInclude("sqlite3.h");
+// });
+// Zig 0.17: zig translate-c -lc popSQL_c.h > popSQL_c.zig
+const sqlite3 = @import("popSQL_c.zig");
 
 const Event = struct {
     id: i64,
@@ -70,13 +73,15 @@ fn ensureTableExists(
     const info = @typeInfo(T).@"struct";
     comptime var sql: []const u8 =
         "CREATE TABLE IF NOT EXISTS events (\n";
-    inline for (info.fields, 0..) |field, i| {
-        const col_type = comptime sqlType(field.type);
+    // Zig 0.16: inline for (info.fields, 0..) |field, i|,
+    // with field.type and field.name
+    inline for (info.field_names, info.field_types, 0..) |field_name, FieldT, i| {
+        const col_type = comptime sqlType(FieldT);
         const comma = if (i == 0) "" else ",\n";
-        const is_id = comptime std.mem.eql(u8, field.name, "id");
+        const is_id = comptime std.mem.eql(u8, field_name, "id");
         const pk: []const u8 = if (is_id) " PRIMARY KEY" else "";
         sql = sql ++ comma ++
-            "  " ++ field.name ++ " " ++ col_type ++ pk;
+            "  " ++ field_name ++ " " ++ col_type ++ pk;
     }
     sql = sql ++ "\n);";
     try checkError(
@@ -103,7 +108,8 @@ fn insertRecord(db: *sqlite3.sqlite3, record: anytype) !void {
     const info = @typeInfo(T).@"struct";
 
     comptime var placeholders: []const u8 = "";
-    inline for (info.fields, 0..) |_, i| {
+    // Zig 0.16: inline for (info.fields, 0..) |_, i|
+    inline for (info.field_names, 0..) |_, i| {
         placeholders = placeholders ++ (if (i == 0) "?" else ", ?");
     }
     const sql = "INSERT INTO events VALUES (" ++ placeholders ++ ")";
@@ -115,9 +121,10 @@ fn insertRecord(db: *sqlite3.sqlite3, record: anytype) !void {
     };
 
     // Inline for unrolls into a direct sequence of bind calls — one per field.
-    inline for (info.fields, 0..) |field, i| {
+    // Zig 0.16: inline for (info.fields, 0..) |field, i|, with field.name
+    inline for (info.field_names, 0..) |field_name, i| {
         const col: c_int = @intCast(i + 1);
-        const val = @field(record, field.name);
+        const val = @field(record, field_name);
         try bindValue(stmt.?, col, val);
     }
 

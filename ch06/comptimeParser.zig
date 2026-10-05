@@ -113,9 +113,11 @@ fn encode(
 
     // Write each payload field in declaration order
     var offset: usize = HEADER_SIZE;
-    inline for (@typeInfo(Payload).@"struct".fields) |field| {
-        const FieldT = field.type;
-        const value = @field(payload, field.name);
+    // Zig 0.16: inline for (@typeInfo(Payload).@"struct".fields) |field|,
+    // with field.type and field.name
+    const info = @typeInfo(Payload).@"struct";
+    inline for (info.field_names, info.field_types) |field_name, FieldT| {
+        const value = @field(payload, field_name);
         const wire_value = wireInt(FieldT, value);
         const bytes = std.mem.asBytes(&wire_value);
         @memcpy(buf[offset..][0..@sizeOf(FieldT)], bytes);
@@ -148,13 +150,15 @@ fn decode(
 
     var payload: Payload = undefined;
     var offset: usize = HEADER_SIZE;
-    inline for (@typeInfo(Payload).@"struct".fields) |field| {
-        const FieldT = field.type;
+    // Zig 0.16: inline for (@typeInfo(Payload).@"struct".fields) |field|,
+    // with field.type and field.name
+    const info = @typeInfo(Payload).@"struct";
+    inline for (info.field_names, info.field_types) |field_name, FieldT| {
         const raw = std.mem.bytesToValue(
             FieldT,
             buf[offset..][0..@sizeOf(FieldT)],
         );
-        @field(payload, field.name) = fromWireInt(FieldT, raw);
+        @field(payload, field_name) = fromWireInt(FieldT, raw);
         offset += @sizeOf(FieldT);
     }
 

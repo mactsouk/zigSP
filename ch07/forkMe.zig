@@ -1,8 +1,11 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("unistd.h");
-    @cInclude("sys/wait.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("unistd.h");
+//     @cInclude("sys/wait.h");
+// });
+// Zig 0.17: zig translate-c -lc forkMe_c.h > forkMe_c.zig
+const c = @import("forkMe_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     _ = init;

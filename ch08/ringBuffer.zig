@@ -6,12 +6,10 @@ const AtomicBool = std.atomic.Value(bool);
 const size = 4;
 
 // Ring buffer with atomic slots
-var buffer: [size]AtomicU32 = [_]AtomicU32{
-    AtomicU32.init(0),
-} ** size;
-var fullFlags: [size]AtomicBool = [_]AtomicBool{
-    AtomicBool.init(false),
-} ** size;
+// Zig 0.16: [_]AtomicU32{AtomicU32.init(0)} ** size
+var buffer: [size]AtomicU32 = @splat(AtomicU32.init(0));
+// Zig 0.16: [_]AtomicBool{AtomicBool.init(false)} ** size
+var fullFlags: [size]AtomicBool = @splat(AtomicBool.init(false));
 
 var producerIndex = std.atomic.Value(usize).init(0);
 var consumerIndex = std.atomic.Value(usize).init(0);

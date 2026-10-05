@@ -1,11 +1,14 @@
 const std = @import("std");
 
-const c = @cImport({
-    @cInclude("sys/socket.h");
-    @cInclude("netinet/in.h");
-    @cInclude("arpa/inet.h");
-    @cInclude("unistd.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("sys/socket.h");
+//     @cInclude("netinet/in.h");
+//     @cInclude("arpa/inet.h");
+//     @cInclude("unistd.h");
+// });
+// Zig 0.17: zig translate-c -lc udp_c.h > udp_c.zig
+const c = @import("udp_c.zig");
 
 pub fn main(init: std.process.Init) !void {
     _ = init;
@@ -19,7 +22,8 @@ pub fn main(init: std.process.Init) !void {
         .sin_family = c.AF_INET,
         .sin_port = std.mem.nativeToBig(u16, port),
         .sin_addr = .{ .s_addr = c.INADDR_ANY },
-        .sin_zero = [_]u8{0} ** 8,
+        // Zig 0.16: .sin_zero = [_]u8{0} ** 8,
+        .sin_zero = @splat(0),
     };
 
     const sockaddr_ptr: *const c.sockaddr = @ptrCast(&addr);

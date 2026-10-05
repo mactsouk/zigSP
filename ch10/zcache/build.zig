@@ -17,7 +17,8 @@ pub fn build(b: *std.Build) void {
 
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| run_cmd.addArgs(args);
+    // Zig 0.16: if (b.args) |args| run_cmd.addArgs(args);
+    run_cmd.addPassthruArgs();
     const run_step = b.step("run", "Run the zcache server");
     run_step.dependOn(&run_cmd.step);
 
@@ -72,7 +73,8 @@ pub fn build(b: *std.Build) void {
 
     const client_run = b.addRunArtifact(client_exe);
     client_run.step.dependOn(b.getInstallStep());
-    if (b.args) |args| client_run.addArgs(args);
+    // Zig 0.16: if (b.args) |args| client_run.addArgs(args);
+    client_run.addPassthruArgs();
     const client_step = b.step("client", "Run the ZEMP test client");
     client_step.dependOn(&client_run.step);
 

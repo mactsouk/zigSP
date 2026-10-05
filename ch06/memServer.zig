@@ -1,8 +1,11 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const c = @cImport({
-    @cInclude("time.h");
-});
+// Zig 0.16:
+// const c = @cImport({
+//     @cInclude("time.h");
+// });
+// Zig 0.17: zig translate-c -lc memServer_c.h > memServer_c.zig
+const c = @import("memServer_c.zig");
 
 const MemStats = struct {
     os: []const u8,
