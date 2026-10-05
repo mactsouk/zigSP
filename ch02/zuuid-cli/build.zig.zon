@@ -5,8 +5,8 @@
 
     .dependencies = .{
         .zuuidcli = .{
-            .url = "git+https://github.com/mactsouk/zuuid?ref=main#99fe58afa93d8f7fd345c95e44143ee84c62b49b",
-            .hash = "zuuid-0.1.0-A7QzOqcTAACJ2J43XluWq9XIe5v0gr-GV2BC5trNpTAR",
+            .url = "git+https://github.com/mactsouk/zuuid?ref=main#bc4ae492a7f15de975e94cb17711a0e68eb04aec",
+            .hash = "zuuid-0.1.0-A7QzOhUUAAAuKkvcIvYmU4MuEMDA2mztggHOSeUftH9k",
             .branch = "main",
         },
     },
