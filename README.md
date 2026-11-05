@@ -94,4 +94,11 @@ Moves from in-memory to persistent storage. Covers JSON reading and writing, par
 
 Closes the book by building `zcalc`, a small interpreted programming language, from scratch. Implements all three pillars of an interpreter — a Lexer, a Parser and a tree-walking Evaluator — and wraps them in an interactive REPL. A fitting capstone that draws on every technique introduced across the book.
 
+---
+## Errata and Trouble Shooting Tips
 
+### `Page xxii` (**Syntax Highlighitng**): 
+For the "middle" code block, the highlighted code block isn't produced. It was added as old tempelate default
+
+### `Page 7` (**Code Error**)
+It is written `pub fnmain()` instead of `pub fn main()`
